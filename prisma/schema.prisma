@@ -53,14 +53,14 @@ model User {
 model Post {
   id          Int        @id @default(autoincrement())
   title       String
-  slug        String      @unique
+  slug        String    @unique
   content     String
   thumbnail   String?
   tags        String[]
   isFeatured  Boolean     @default(false)
   viewCount   Int         @default(0)
   authorId    Int
-  author      User        @relation(fields: [authorId], references: [id])
+  author      User        @relation(fields: [authorId], references: [id] , onDelete: Cascade)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -75,7 +75,8 @@ model Project {
   description String
   thumbnail   String?
   liveUrl     String?
-  repoUrl     String?
+  clientRepoUrl     String?
+  serverRepoUrl     String?
   features    String[]    // Array of features
   isFeatured  Boolean     @default(false)
   ownerId     Int
