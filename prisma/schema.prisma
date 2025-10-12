@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+// ==========================
+// ENUMS
+// ==========================
+enum Role {
+  ADMIN
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BLOCK
+}
+
+// ==========================
+// MODELS
+// ==========================
+
+model User {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String        @unique
+  password    String?
+  role        Role          @default(USER)
+  phone       String?
+  picture     String?
+  status      UserStatus    @default(ACTIVE)
+  isVerified  Boolean       @default(false)
+  posts       Post[]        // Relation: One user can have many posts
+  projects    Project[]     // Relation: One user can have many projects
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+// ==========================
+// BLOG MODEL
+// ==========================
+model Post {
+  id          Int        @id @default(autoincrement())
+  title       String
+  slug        String      @unique
+  content     String
+  thumbnail   String?
+  tags        String[]
+  isFeatured  Boolean     @default(false)
+  viewCount   Int         @default(0)
+  authorId    Int
+  author      User        @relation(fields: [authorId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+// ==========================
+// PROJECT MODEL
+// ==========================
+model Project {
+  id          Int        @id @default(autoincrement())
+  title       String
+  slug        String      @unique
+  description String
+  thumbnail   String?
+  liveUrl     String?
+  repoUrl     String?
+  features    String[]    // Array of features
+  isFeatured  Boolean     @default(false)
+  ownerId     Int
+  owner       User        @relation(fields: [ownerId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+// ==========================
+// ABOUT MODEL (Static Info)
+// ==========================
+model About {
+  id          Int        @id @default(autoincrement())
+  name        String
+  title       String
+  bio         String
+  email       String
+  phone       String?
+  address     String?
+  skills      String[]    // Example: ["React", "Next.js", "TypeScript"]
+  experiences Experience[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+// ==========================
+// EXPERIENCE MODEL (For About Section)
+// ==========================
+model Experience {
+  id          Int        @id @default(autoincrement())
+  company     String
+  role        String
+  startDate   DateTime
+  endDate     DateTime?
+  description String
+  aboutId     Int
+  about       About      @relation(fields: [aboutId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
