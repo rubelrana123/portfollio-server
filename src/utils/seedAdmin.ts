@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { prisma } from "../config/db";
 
-export const seedSuperAdmin = async () => {
+export const seedAdmin = async () => {
   try {
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
     const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ;
