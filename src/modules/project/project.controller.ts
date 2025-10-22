@@ -48,7 +48,7 @@ const updateProject = async (req: Request, res: Response) => {
 
 const deleteProject = async (req: Request, res: Response) => {
     await ProjectService.deleteProject(Number(req.params.id));
-    res.json({ message: "Project deleted" });
+    res.json({ message: "Project delete" });
 };
 
 // const getBlogStats = async (req: Request, res: Response) => {
