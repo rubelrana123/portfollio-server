@@ -8,7 +8,7 @@ import { generateSlug } from "../../utils/generateSlug";
 const createProject = async (payload: Prisma.ProjectCreateInput): Promise<Project> => {
   // Generate slug dynamically if not provided
   const slug = payload.slug || generateSlug(payload.title);
-
+  console.log(payload)
   const result = await prisma.project.create({
     data: {
       ...payload,
@@ -72,7 +72,7 @@ const getAllProjects = async ({
       },
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: "asc",
     },
   });
 

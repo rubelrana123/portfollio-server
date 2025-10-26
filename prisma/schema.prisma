@@ -13,6 +13,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 // ==========================
 // ENUMS
 // ==========================
@@ -77,6 +78,7 @@ model Project {
   liveUrl     String?
   clientRepoUrl     String?
   serverRepoUrl     String?
+  technologies   String[]   // Array of technologies used
   features    String[]    // Array of features
   isFeatured  Boolean     @default(false)
   ownerId     Int
